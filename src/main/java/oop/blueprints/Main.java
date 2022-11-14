@@ -4,24 +4,22 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        int Xcor=5;
-        int Ycor =5;
-        int mines = 1;
-        System.out.print("Give me an input");
-        String read = textHandle.ReadInput();//testint text input
-        System.out.println(read);
-        Grid grid = new Grid(Xcor, Ycor, mines);//i am initilising a basic grid of 5x5 and 1 mine
-
-        grid.startTiles();
-        for (int i=0;i<Xcor; i++) {
-
-            for (int j=0;j<Ycor; j++) {
-
-                boolean truth = grid.tiledGrid[Xcor][Ycor].isMined();
-                if (truth){
-
-                }
-            }
+        int MAX=3;
+        boolean alive = true;
+        int[] RawData;
+        RawData = new int[MAX];
+        String[] Words;
+        Words = new String[]{"width","height","number of bombs"};
+        String Input="";
+        textHandle TextHandle = new textHandle();
+        for (int i =0; i<MAX; i++){
+            System.out.println("Enter "+Words[i]);
+            Input = TextHandle.ReadInput();
+            RawData[i]=TextHandle.Convert(Input);
+        }
+        Grid grid = new Grid(RawData[0], RawData[1],RawData[2]);//i am initilising a basic grid of 5x5 and 1 mine
+        while (alive) {
+            TextHandle.Click(grid);
         }
     }
 }
