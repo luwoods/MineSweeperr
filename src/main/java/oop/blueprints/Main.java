@@ -19,7 +19,7 @@ public class Main {
         }
         Grid grid = new Grid(RawData[0], RawData[1],RawData[2]);//i am initilising a basic grid of 5x5 and 1 mine
         while (alive) {
-            TextHandle.Click(grid);
+            alive = TextHandle.Click(grid);
         }
     }
 }

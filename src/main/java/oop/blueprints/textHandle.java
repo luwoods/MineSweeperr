@@ -16,20 +16,20 @@ public class textHandle {
             for (int j=0;j<y; j++) {
                 boolean t1 = grid.tiledGrid[i][j].isRevealed();
                 boolean t2 = grid.tiledGrid[i][j].isMined();
-            if (t1 && t2){
-                System.out.print(":(");
+                if (t1 && t2){
+                    System.out.print(":(");
+                } else if (!t1){
+                    System.out.print("--");
+                }
+                else if (t2){
+                    System.out.print("#");
+                }
+                else if (t1 && !t2){
+                    int number = grid.tiledGrid[i][j].getNumber();
+                    System.out.print("."+number);
+                }
             }
-            else if (!t1){
-                System.out.print("--");
-            }
-            else if (t2){
-                System.out.print("#");
-            }
-            else if (t1 && !t2){
-                System.out.print(".0");
-            }
-        }
-        System.out.print("\n");}
+            System.out.print("\n");}
     }
     public int Convert(String str){
         int number=0;
@@ -42,6 +42,7 @@ public class textHandle {
         return number;
     }
     public boolean Click(Grid grid) throws IOException {
+        this.screenRefresh(grid);
         int x;
         int y;
         boolean alive = true;
@@ -54,8 +55,8 @@ public class textHandle {
         grid.tiledGrid[x][y].setRevealed(true);
         if (grid.tiledGrid[x][y].isMined()) {
             alive = false;
+            this.screenRefresh(grid);
         }
-        this.screenRefresh(grid);
         return alive;
     }
 }
