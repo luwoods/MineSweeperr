@@ -9,7 +9,7 @@ public class Main {
         int[] RawData;
         RawData = new int[MAX];
         String[] Words;
-        Words = new String[]{"width","height","number of bombs"};
+        Words = new String[]{"height","width","number of bombs"};
         String Input="";
         textHandle TextHandle = new textHandle();
         for (int i =0; i<MAX; i++){
