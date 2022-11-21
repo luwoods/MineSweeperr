@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-public class textHandle {
+public class TextHandle {
     public String ReadInput() throws IOException {
         BufferedReader ConsoleText = new BufferedReader(new InputStreamReader(System.in));
         return ConsoleText.readLine();
@@ -56,27 +56,25 @@ public class textHandle {
     public boolean[] Click(Grid grid) throws IOException {
         this.screenRefresh(grid);
         int[] coordinates={-1,-1};
-        boolean MarkerForRepeat=false;
-        boolean[] Status ={true,false};//Status[0] is Alive/dead,status[1] is are you flagging
+        boolean markerForRepeat=false;
+        boolean[] status ={true,false};//Status[0] is Alive/dead,status[1] is are you flagging
         System.out.println("Type F for flag, otherwise press any key to reveal");
         String Input = this.ReadInput();
         if (Objects.equals(Input, "F") || Objects.equals(Input, "f")){
-            Status[1]=true;
+            status[1]=true;
         }
         while(coordinates[0]<0||coordinates[0]>= grid.getxSize() || coordinates[1]<0 || coordinates[1]>=grid.getySize()) {
-            if (MarkerForRepeat){
+            if (markerForRepeat){
                 System.out.println("Sorry, your coordinates are illegal, try again.");
             }
             coordinates = askCoordinates();
-            MarkerForRepeat=true;
+            markerForRepeat=true;
         }
         Tile DummyTile = grid.tiledGrid[coordinates[0]][coordinates[1]];//Adding for readability
-        if (Status[1]) {
-            if (!DummyTile.isFlagged() && !DummyTile.isRevealed()){ //if it's  not flagged, flag
-                DummyTile.setFlagged(true);
-            } else{
-                DummyTile.setFlagged(false);//unflag
-            }
+        if (status[1]) {
+            //if it's  not flagged, flag
+            //unflag
+            DummyTile.setFlagged(!DummyTile.isFlagged() && !DummyTile.isRevealed());
         }else
         {
             if (!DummyTile.isRevealed()&&(!DummyTile.isFlagged())) {  //you cant reveal something twice and you cant click on a flag
@@ -92,18 +90,18 @@ public class textHandle {
                             }
                         }
                     }
-                    Status[0] = false;
+                    status[0] = false;
                     this.screenRefresh(grid);
                     System.out.println("You have died.");
                 }
             }
-            if (grid.getRevealedLeft() <= 0 && Status[0]) { //Checking win condition, you have to be alive still
+            if (grid.getRevealedLeft() <= 0 && status[0]) { //Checking win condition, you have to be alive still
                 this.screenRefresh(grid);
                 System.out.println("Congratulations, you've won");
-                Status[0] = false;
+                status[0] = false;
             }
         }
-        return Status;
+        return status;
     }
 
     private int[] askCoordinates() throws IOException {

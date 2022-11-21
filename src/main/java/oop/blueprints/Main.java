@@ -12,7 +12,7 @@ public class Main {
         RawData = new int[MAX]; //Creating an array of input words
         String[] OnScreenInstructions;
         OnScreenInstructions = new String[]{"height","width","number of bombs"};
-        textHandle TextHandle = new textHandle();
+        TextHandle TextHandle = new TextHandle();
         for (int i =0; i<MAX; i++){ //asking user for grid data
             System.out.println("Enter "+OnScreenInstructions[i]);
             do {

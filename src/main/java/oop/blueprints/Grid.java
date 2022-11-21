@@ -12,7 +12,7 @@ public class Grid {
     }
 
     public int getTotalMines() {
-        return TotalMines;
+        return totalMines;
     }
     public int getRevealedLeft(){
         int runningTotal=0;
@@ -23,18 +23,14 @@ public class Grid {
                 }
             }
         }
-        return (xSize*ySize - TotalMines-runningTotal);
+        return (xSize*ySize - totalMines -runningTotal);
     }
 
     private int ySize;
-    private int TotalMines;
+    private int totalMines;
 
     public Tile[][] tiledGrid;
-    private boolean EdgeChecker(int TopEdge, int TileCounter,int BottomEdge){// deprecated EdgeChecker module
-        if(TopEdge==0){/*if we're on an edge*/
-            return true;/* skip the first row*/
-        } else return TopEdge + TileCounter < BottomEdge;
-    }
+
     private boolean ifNotOOB(int distFromTop, int distFromLeft, int width, int height, int checkX, int checkY){
         //Our technique uses double for loops to iterate in a 3x3 grid. Its important to check that the squares actually
         //exist BEFORE attempting to access them and this method works with that.
@@ -65,10 +61,9 @@ public class Grid {
     public Grid(int x, int y, int No) {//constructor
         this.xSize = x;
         this.ySize = y;
-        this.TotalMines = No; //need a way to track when you win
+        this.totalMines = No; //need a way to track when you win
         int count=0;
         Random random = new Random();
-        int RunningTotal;
         this.tiledGrid = new Tile[this.xSize][this.ySize];
         for (int i =0; i<this.xSize;i++){
             for(int j=0; j<this.ySize;j++){
@@ -76,7 +71,6 @@ public class Grid {
             }
 
         }
-        //for(int i =0; i<TotalMines; i++){ /* radnomly generates mines*/
             do {
                 int randX = random.nextInt(this.xSize);// nextInt is between 0 and xSize-1
                 int randY = random.nextInt(this.ySize);// nextInt is between 0 and ySize-1
@@ -84,20 +78,22 @@ public class Grid {
                     this.tiledGrid[randX][randY].setMined(true);
                     count ++;
                 }
-        } while (count < TotalMines);
-
-
-        for(int i=0;i<this.xSize;i++){/* We re going to look at the whole grid */
-            for(int j=0;j<this.ySize;j++) {
+        } while (count < totalMines);
+            numberAssignment();
+    }
+    private void numberAssignment(){
+        int RunningTotal;
+        for(int i=0;i<this.xSize;i++) {/* We re going to look at the whole grid */
+            for (int j = 0; j < this.ySize; j++) {
                 if (!this.tiledGrid[i][j].isMined()) { /* only assign a number if it is not a mine*/
-                    RunningTotal=0;
+                    RunningTotal = 0;
                     for (int k = -1; k < 2; k++) { /* one of the tiles will look at every tile ABOVE it first, row first */
-                        for (int l = -1; l < 2; l++){
-                            if(ifNotOOB(i,j,this.xSize,this.ySize,k,l)){/*checking if its inside the edges*/
-                                if (this.tiledGrid[i+k][j+l].isMined()) { /*We cant put this statement onto the same one above because we dont't know if we can access it*/
+                        for (int l = -1; l < 2; l++) {
+                            if (ifNotOOB(i, j, this.xSize, this.ySize, k, l)) {/*checking if its inside the edges*/
+                                if (this.tiledGrid[i + k][j + l].isMined()) { /*We cant put this statement onto the same one above because we dont't know if we can access it*/
                                     RunningTotal++;
                                 }
-                           }
+                            }
                         }
                     }
                     this.tiledGrid[i][j].setNumber(RunningTotal);
