@@ -36,6 +36,8 @@ public class Grid {
         } else return TopEdge + TileCounter < BottomEdge;
     }
     private boolean ifNotOOB(int distFromTop, int distFromLeft, int width, int height, int checkX, int checkY){
+        //Our technique uses double for loops to iterate in a 3x3 grid. Its important to check that the squares actually
+        //exist BEFORE attempting to access them and this method works with that.
         return ((distFromTop + checkX >= 0) && (distFromTop + checkX < width) && (distFromLeft + checkY >= 0) && (distFromLeft + checkY < height));
     }
 
@@ -48,7 +50,7 @@ public class Grid {
                         if (ifNotOOB(posX, posY, this.xSize, this.ySize, k, l)) {
 
                             this.tiledGrid[posX][posY].setRevealed(true);
-                            Reveal(posX + k, posY + l);
+                            Reveal(posX + k, posY + l); //If we click on a zero we want that zero to also reveal around itself
 
                         }
                     }
